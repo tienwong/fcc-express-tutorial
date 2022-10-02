@@ -6,6 +6,11 @@ require('dotenv').config()
 const assetsPath = __dirname + '/public'
 const indexPath = __dirname + '/views/index.html'
 
+app.get('/:word/echo', (req, res) => {
+    const word = req.params.word
+    res.send({echo: word})
+})  
+
 app.get('/now', (req, res, next) => {
     req.time = new Date().toString()
     next()
