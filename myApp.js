@@ -1,5 +1,7 @@
 let express = require('express');
 let app = express();
+let conf = require('dotenv').config()
+// console.log(conf)
 
 const assetsPath = __dirname + '/public'
 const indexPath = __dirname + '/views/index.html'
@@ -11,7 +13,10 @@ app.get('/', (req, res) => {
 })
 
 app.get('/json', (req, res) => {
-    res.json({message: 'Hello json'})
+    if (conf.parsed?.MESSAGE_STYLE === 'uppercase') {
+        res.json({ message: "HELLO JSON" })
+    }
+    res.json({ message: 'Hello json' })
 })
 
 module.exports = app;
