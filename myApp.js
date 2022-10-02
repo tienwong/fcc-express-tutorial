@@ -6,6 +6,13 @@ require('dotenv').config()
 const assetsPath = __dirname + '/public'
 const indexPath = __dirname + '/views/index.html'
 
+app.get('/now', (req, res, next) => {
+    req.time = new Date().toString()
+    next()
+}, (req, res) => {
+    res.send({time: req.time})
+})
+
 const logger = (req, res, next) => {
     const method = req.method
     const path = req.path
