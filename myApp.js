@@ -1,16 +1,29 @@
 let express = require('express');
 let app = express();
 require('dotenv').config()
+const bodyParser = require('body-parser')
 // console.log(conf)
 
 const assetsPath = __dirname + '/public'
 const indexPath = __dirname + '/views/index.html'
 
-app.get('/name', (req, res) => {
-    const firstname = req.query.first
-    const lastname = req.query.last
+const logger = (req, res, next) => {
+    const method = req.method
+    const path = req.path
+    const ip = req.ip
+    console.log(method + ' ' + path + ' - ' + ip)
+    next()
+}
 
-    res.send({ name: `${firstname} ${lastname}`})
+app.use(logger)
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.route('/name').post((req, res) => {
+    console.log(req.body)
+    const firstname = req.body.first
+    const lastname = req.body.last
+  
+    res.json({ name: `${firstname} ${lastname}`})
 })
 
 app.get('/:word/echo', (req, res) => {
@@ -24,16 +37,6 @@ app.get('/now', (req, res, next) => {
 }, (req, res) => {
     res.send({time: req.time})
 })
-
-const logger = (req, res, next) => {
-    const method = req.method
-    const path = req.path
-    const ip = req.ip
-    console.log(method + ' ' + path + ' - ' + ip)
-    next()
-}
-
-app.use(logger)
 
 app.use('/public', express.static(assetsPath))
 
