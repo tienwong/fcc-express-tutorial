@@ -6,6 +6,13 @@ require('dotenv').config()
 const assetsPath = __dirname + '/public'
 const indexPath = __dirname + '/views/index.html'
 
+app.get('/name', (req, res) => {
+    const firstname = req.query.first
+    const lastname = req.query.last
+
+    res.send({ name: `${firstname} ${lastname}`})
+})
+
 app.get('/:word/echo', (req, res) => {
     const word = req.params.word
     res.send({ echo: word })
